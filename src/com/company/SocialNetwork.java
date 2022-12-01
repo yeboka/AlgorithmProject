@@ -105,7 +105,7 @@ public class SocialNetwork {
         int l = 0;
         for (int i = 0; i < users.size(); i++) {
             if(i != ind) {
-                if (!users.get(ind).followings.contains(users.get(i))) {
+                if (!users.get(ind).followings.contains(users.get(i)) && !users.get(ind).blocked.contains(users.get(i))) {
                     System.out.println((l + 1) + " " + users.get(i).username);
                     l++;
                 }
@@ -114,7 +114,11 @@ public class SocialNetwork {
         System.out.println("Write one of usernames at the top: ");
         System.out.println("Write 'back' if you don't want to subscribe");
         String username = in.next();
-        while(!containsUserName(username) || users.get(ind).containsFollowings(username) || username.equals(users.get(ind).username)) {
+        while(!containsUserName(username)
+                || users.get(ind).containsFollowings(username)
+                || username.equals(users.get(ind).username)
+                || users.get(ind).containsBlocked(username))
+        {
             if (!username.equals("back") ) {
                 System.out.print("Please try again -->  ");
                 username = in.next();
@@ -158,7 +162,7 @@ public class SocialNetwork {
         System.out.println("All users -->");
         int l = 0;
         for(int i = 0; i < users.size(); i++) {
-            if(i != ind) {
+            if(i != ind && !users.get(ind).blocked.contains(users.get(i))) {
                 System.out.println(l +1 + ": " + users.get(i).username);
                 l++;
             }
@@ -168,7 +172,9 @@ public class SocialNetwork {
         System.out.println("Write 'back' if you don't want to unsubscribe");
         String username = in.next();
 
-        while (!containsUserName(username) || username.equals(users.get(ind).username)) {
+        while (!containsUserName(username)
+                || username.equals(users.get(ind).username)
+                || users.get(ind).containsBlocked(username)) {
             if (!username.equals("back")) {
                 System.out.print("Please try again -->  ");
                 username = in.next();
