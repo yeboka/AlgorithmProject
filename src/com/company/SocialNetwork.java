@@ -101,6 +101,7 @@ public class SocialNetwork {
                     }
                     System.out.println("Write username: ");
                     System.out.println("Yerbolat");
+                    System.out.println("test");
                 }
             }
         }
