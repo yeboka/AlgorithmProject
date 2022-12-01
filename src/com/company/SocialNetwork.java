@@ -100,7 +100,7 @@ public class SocialNetwork {
                         System.out.println((i) + " " + users.get(i));
                     }
                     System.out.println("Write username: ");
-
+                    System.out.println("Yerbolat");
                 }
             }
         }
