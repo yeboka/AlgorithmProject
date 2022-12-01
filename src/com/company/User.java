@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class User {
-    String username;
+    public String username;
     String name;
     String lastname;
     String gmail;
@@ -17,6 +17,7 @@ public class User {
     List<String> photos;
 
     public User(String username, String name, String lastname, int age, String gmail, String gender, String password, boolean addPhoto) {
+        this.username = username;
         this.gmail = gmail;
         this.name = name;
         this.lastname = lastname;
@@ -27,6 +28,27 @@ public class User {
         followers = new ArrayList<>();
         followings = new ArrayList<>();
         blocked = new ArrayList<>();
+    }
+
+    public boolean containsFollowings(String username) {
+        for(User user: followings ) {
+            if(user.username.equals(username)) return true;
+        }
+        return false;
+    }
+
+    public boolean containsFollowers(String username) {
+        for(User user: followings ) {
+            if(user.username.equals(username)) return true;
+        }
+        return false;
+    }
+
+    public boolean containsBlocked(String username) {
+        for(User user: followings ) {
+            if(user.username.equals(username)) return true;
+        }
+        return false;
     }
 }
 
