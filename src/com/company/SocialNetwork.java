@@ -134,6 +134,7 @@ public class SocialNetwork {
 
         if (username.equals("back")) return;
 
+
         while(!containsUserName(username)
                 || user.containsFollowings(username)
                 || username.equals(user.username)
