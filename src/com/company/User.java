@@ -56,7 +56,7 @@ public class User {
         System.out.println(
                 "@" + username + "\n" +
                 name + " " + lastname + "\n" +
-                gmail + "\n\n"
+                gmail + "\n"
         );
 
         if (posts.size() == 0) System.out.println("There are no publications yet");
@@ -66,31 +66,10 @@ public class User {
         }
 
         System.out.println(
-                "1. followers (" + followers.size() + ")\n" +
-                "2. followings (" + followers.size() + ")\n" +
-                "3. black list (" + blocked.size() + ")\n\n"
-        );
-        Scanner in = new Scanner(System.in);
-        int choice = in.nextInt();
-        if (choice == 1){
-            for (User user:
-                 followers) {
-                System.out.println(user.username);
-            }
-        }
-        if (choice == 2){
-            for (User user:
-                    followings) {
-                System.out.println(user.username);
-            }
-        }
-        if (choice == 3){
-            for (User user:
-                    blocked) {
-                System.out.println(user.username);
-            }
-        }
-
+                "1: followers (" + followers.size() + ")\n" +
+                "2: followings (" + followings.size() + ")\n" +
+                "3: black list (" + blocked.size() + ")"
+           );
     }
 }
 

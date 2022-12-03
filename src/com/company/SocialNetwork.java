@@ -8,7 +8,6 @@ public class SocialNetwork {
     static User user;
     static boolean isLogged;
 
-
     public static void main(String[] args) {
         users = new ArrayList<>();
         int index;
@@ -77,132 +76,254 @@ public class SocialNetwork {
                 }
             } else {
                 while (true) {
-                    System.out.println("///////////////////////////////////"
-                            + "\n1: Show my subscribes"
-                            + "\n2: Follow "
-                            + "\n3: Unfollow         "
-                            + "\n4: Block          "
-                            + "\n5: Show my profile    "
-                            + "\n6: Add photo     "
-                            + "\n7: Show friends profile    "
-                            + "\n8: logout            "
-                            + "\n//////////////////////////////////");
-                    System.out.print("Please select 1, 2, ..., 8 : ");
+                    System.out.println("""
+                            -------------------------
+                            1: Show my profile   \s
+                            2: Add photo    \s
+                            3: Search user  \s
+                            4: logout           \s
+                            -------------------------""");
+                    System.out.print("Please select 1, 2, 3, 4 : ");
                     int input = in.nextInt();
-                    if (input == 8) {
+                    if (input == 4) {
                         user = null;
                         isLogged = false;
                         break;
                     }
                     switch (input) {
                         case 1 -> {
-                            System.out.println("---->");
-                            for (int i = 0; i < user.followings.size(); i++) {
-                                System.out.println(i + 1 + ": " + user.followings.get(i).username);
-                            }
+                            myProfile();
                         }
                         case 2 -> {
-                            follow();
+
                         }
                         case 3 -> {
-                            unFollow();
+                            search();
                         }
-                        case 4 -> {
-//                            block(ind);
-                        }
-                        case 5 -> {
-                            user.getProfile();
-                        }
+
                     }
                 }
             }
         }
     }
 
-    public static void follow() {
-        for (User temp : users) {
-            if (temp != user
-                    && !user.containsFollowings(temp.username)
-                    && !user.containsBlocked(temp.username)) {
-                System.out.println(temp.username);
+    public static void myProfile() {
+        user.getProfile();
+        System.out.print("Please select operation -->  ");
+        int choose = in.nextInt();
+
+        switch (choose) {
+            case 1 -> {
+                System.out.println("-------------------------");
+                for(User follower: user.followers) {
+                    System.out.println("--> " + follower.username);
+                }
+                System.out.println("-------------------------");
+            }
+            case 2 -> {
+                System.out.println("-------------------------");
+                for(User following: user.followings) {
+                    System.out.println("--> " + following.username);
+                }
+                System.out.println("-------------------------");
+            }
+            case 3 -> {
+                System.out.println("-------------------------");
+                for(User blocked: user.blocked) {
+                    System.out.println("--> " + blocked.username);
+                }
+                System.out.println("-------------------------");
             }
         }
+    }
 
-        System.out.println("Write one of usernames at the top: ");
-        System.out.println("Write 'back' if you don't want to subscribe");
+
+
+    public static void search() {
+        System.out.println("All users -->");
+        for(User temp: users) {
+            if(temp!=user) {
+                System.out.println("--> " + temp.username);
+            }
+        }
+        System.out.println("Write one of usernames at the top ");
+        System.out.println("Write 'back' if you don't want to unsubscribe");
         String username = in.next();
 
         if (username.equals("back")) return;
 
-
         while(!containsUserName(username)
-                || user.containsFollowings(username)
-                || username.equals(user.username)
-                || user.containsBlocked(username))
+                || username.equals(user.username))
         {
                 System.out.print("Please try again -->  ");
                 username = in.next();
         }
         int index = findIndex(username);
-        user.followings.add(users.get(index));
-        users.get(index).followers.add(user);
+
+        while (true) {
+            users.get(index).getProfile();
+
+            String follow = users.get(index).followers.contains(user) ? "Unfollow" : "Follow";
+            String block = (user.blocked.contains(users.get(index))) ? "Unblock" : "Block";
+            System.out.println(user.blocked.contains(user));
+            System.out.printf("""
+                            4: %s   \s
+                            5: %s   \s
+                            6: Like \s
+                            7: Comment          \s
+                            8: Back   \s
+                            """,
+                    follow,block
+            );
+
+            System.out.print("Please select operation -->  ");
+            int choose = in.nextInt();
+
+            if (choose == 8) return;
+
+            switch (choose) {
+                case 1 -> {
+                    System.out.println("-------------------------");
+                    for (User followers : users.get(index).followers) {
+                        System.out.println("--> " + followers.username);
+                    }
+                    System.out.println("-------------------------");
+                }
+                case 2 -> {
+                    System.out.println("-------------------------");
+                    for (User following : users.get(index).followings) {
+                        System.out.println("--> " + following.username);
+                    }
+                    System.out.println("-------------------------");
+                }
+                case 3 -> {
+                    System.out.println("-------------------------");
+                    for (User blocked : users.get(index).blocked) {
+                        System.out.println("--> " + blocked.username);
+                    }
+                    System.out.println("-------------------------");
+                }
+                case 4 -> {
+                    if(follow.equals("Follow")) {
+                        user.followings.add(users.get(index));
+                        users.get(index).followers.add(user);
+                    }else {
+                        user.followings.remove(users.get(index));
+                        users.get(index).followers.remove(user);
+                    }
+                }
+                case 5 -> {
+
+                    if(block.equals("Block")) {
+                        if (user.containsFollowings(username)) {
+                            user.followings.remove(users.get(index));
+                            users.get(index).followers.remove(user);
+                        }
+                        user.blocked.add(users.get(index));
+                    }else {
+                        user.blocked.remove(users.get(index));
+                    }
+                }
+                case 6 -> {
+
+                }
+                case 7 -> {
+
+                }
+            }
+        }
     }
 
-    public static void unFollow() {
-        System.out.println("Your subscribes --> ");
-        for (int i = 0; i < user.followings.size(); i++) {
-            System.out.println(i+1 + ": " + user.followings.get(i).username);
-        }
-        System.out.println("Write one of usernames at the top ");
-        System.out.println("Write 'back' if you don't want to unsubscribe");
-        String username = in.next();
-        while(!user.containsFollowings(username) || username.equals(user.username)) {
-            if (!username.equals("back")) {
-                System.out.print("Please try again -->  ");
-                username = in.next();
-            }
-            else {
-                break;
-            }
-        }
-        int index = findIndex(username);
-        if(user.containsFollowings(username)) {
-            user.followings.remove(users.get(index));
-            user.followers.remove(user);
-        }
-    }
 
-    public static void block() {
-        System.out.println("All users -->");
-        int l = 0;
-        for(int i = 0; i < user.followings.size(); i++) {
 
-        }
 
-        System.out.println("Write one of usernames at the top");
-        System.out.println("Write 'back' if you don't want to unsubscribe");
-        String username = in.next();
 
-        while (!containsUserName(username)
-                || username.equals(user.username)
-                || user.containsBlocked(username)) {
-            if (!username.equals("back")) {
-                System.out.print("Please try again -->  ");
-                username = in.next();
-            }
-            else {
-                break;
-            }
-        }
-        int index = findIndex(username);
-        if(containsUserName(username)) {
-            if (user.containsFollowings(username)) {
-                user.followings.remove(users.get(index));
-                users.get(index).followers.remove(user);
-            }
-            user.blocked.add(users.get(index));
-        }
-    }
+
+
+//    public static void follow() {
+//        for (User temp : users) {
+//            if (temp != user
+//                    && !user.containsFollowings(temp.username)
+//                    && !user.containsBlocked(temp.username)) {
+//                System.out.println(temp.username);
+//            }
+//        }
+//
+//        System.out.println("Write one of usernames at the top: ");
+//        System.out.println("Write 'back' if you don't want to subscribe");
+//        String username = in.next();
+//
+//        if (username.equals("back")) return;
+//
+//
+//        while(!containsUserName(username)
+//                || user.containsFollowings(username)
+//                || username.equals(user.username)
+//                || user.containsBlocked(username))
+//        {
+//                System.out.print("Please try again -->  ");
+//                username = in.next();
+//        }
+//        int index = findIndex(username);
+//        user.followings.add(users.get(index));
+//        users.get(index).followers.add(user);
+//    }
+
+//    public static void unFollow() {
+//        System.out.println("Your subscribes --> ");
+//        for (int i = 0; i < user.followings.size(); i++) {
+//            System.out.println(i+1 + ": " + user.followings.get(i).username);
+//        }
+//        System.out.println("Write one of usernames at the top ");
+//        System.out.println("Write 'back' if you don't want to unsubscribe");
+//        String username = in.next();
+//        while(!user.containsFollowings(username) || username.equals(user.username)) {
+//            if (!username.equals("back")) {
+//                System.out.print("Please try again -->  ");
+//                username = in.next();
+//            }
+//            else {
+//                break;
+//            }
+//        }
+//        int index = findIndex(username);
+//        if(user.containsFollowings(username)) {
+//            user.followings.remove(users.get(index));
+//            users.get(index).followers.remove(user);
+//        }
+//    }
+//
+//    public static void block() {
+//        System.out.println("All users -->");
+//        int l = 0;
+//        for(int i = 0; i < user.followings.size(); i++) {
+//
+//        }
+//
+//        System.out.println("Write one of usernames at the top");
+//        System.out.println("Write 'back' if you don't want to unsubscribe");
+//        String username = in.next();
+//
+//        while (!containsUserName(username)
+//                || username.equals(user.username)
+//                || user.containsBlocked(username)) {
+//            if (!username.equals("back")) {
+//                System.out.print("Please try again -->  ");
+//                username = in.next();
+//            }
+//            else {
+//                break;
+//            }
+//        }
+//        int index = findIndex(username);
+//        if(containsUserName(username)) {
+//            if (user.containsFollowings(username)) {
+//                user.followings.remove(users.get(index));
+//                users.get(index).followers.remove(user);
+//            }
+//            user.blocked.add(users.get(index));
+//        }
+//    }
 
     public static int findIndex(String username) {
         int j = -1;
