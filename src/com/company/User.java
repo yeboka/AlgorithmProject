@@ -66,7 +66,7 @@ public class User {
         }
 
         System.out.println(
-                "1: followers (" + followers.size() + ")\n" +
+                "\n1: followers (" + followers.size() + ")\n" +
                 "2: followings (" + followings.size() + ")\n" +
                 "3: black list (" + blocked.size() + ")"
            );

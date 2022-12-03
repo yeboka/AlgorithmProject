@@ -3,6 +3,51 @@ package com.company;
 import java.util.*;
 
 public class SocialNetwork {
+
+    static String[] galery = {
+            "|\\/\\/\\/|  \n" +
+                    " |      |  \n" +
+                    " |      |  \n" +
+                    " | (o)(o)  \n" +
+                    " C      _) \n" +
+                    "  | ,___|  \n" +
+                    "  |   /    \n" +
+                    " /____\\    \n" +
+                    "/      \\",
+            "/\\ /\\  /\\      \n" +
+                    "| V  \\/  \\---. \n" +
+                    "\\_        /   \n" +
+                    " (o)(o)  <__. \n" +
+                    " _C         /  \n" +
+                    "/____,   )  \\  \n" +
+                    "\\     /----' \n" +
+                    "   ooooo       \n" +
+                    "  /     \\",
+            "    &__ \n" +
+                    "  /     \\     \n" +
+                    " |       |    \n" +
+                    " |  (o)(o)    \n" +
+                    " C   .---_)   \n" +
+                    "  |  \\__/     \n" +
+                    "  /_____\\     \n" +
+                    " /_____/ \\    \n" +
+                    "/         \\",
+            "  ,--./,-.\n" +
+                    " / #      \\\n" +
+                    "|          |\n" +
+                    " \\        /\n" +
+                    "  `._,._,'",
+            "      )  (\n" +
+                    "     (   ) )\n" +
+                    "      ) ( (\n" +
+                    "    _______)_\n" +
+                    " .-'---------|  \n" +
+                    "( C|/\\/\\/\\/\\/|\n" +
+                    " '-./\\/\\/\\/\\/|\n" +
+                    "   '_________'\n" +
+                    "    '-------'"
+    };
+
     static ArrayList<User> users;
     static Scanner in = new Scanner(System.in);
     static User user;
@@ -11,11 +56,11 @@ public class SocialNetwork {
     public static void main(String[] args) {
         users = new ArrayList<>();
         int index;
-        users.add(new User("syr","syrkhan", "madiyev", 18, "cheese@gmail.com", "male", "1"));
-        users.add(new User("edu","eduard", "nurlanov", 18, "male", "edu@gmail.com", "1"));
-        users.add(new User("yerka","yerkanat", "sultanov", 18, "yerka@gmail.com", "male", "1"));
-        users.add(new User("qazaqtynqarabalasy","yerbolat", "mukhan", 18, "yerbo@gmail.com", "male", "1"));
-        users.add(new User("mukhanov","zhanbolat", "mukhan", 18, "zhanbo@gmail.com", "male", "1"));
+        users.add(new User("syr", "syrkhan", "madiyev", 18, "cheese@gmail.com", "male", "1"));
+        users.add(new User("edu", "eduard", "nurlanov", 18, "male", "edu@gmail.com", "1"));
+        users.add(new User("yerka", "yerkanat", "sultanov", 18, "yerka@gmail.com", "male", "1"));
+        users.add(new User("qazaqtynqarabalasy", "yerbolat", "mukhan", 18, "yerbo@gmail.com", "male", "1"));
+        users.add(new User("mukhanov", "zhanbolat", "mukhan", 18, "zhanbo@gmail.com", "male", "1"));
 
         while (true) {
             if (!isLogged) {
@@ -28,19 +73,19 @@ public class SocialNetwork {
                     System.out.print("Type your username: ");
                     String username = in.next();
                     while (true) {
-                        if (containsUserName(username)){
+                        if (containsUserName(username)) {
                             System.out.print("This username is busy! Try again");
                             username = in.next();
-                        }else {
+                        } else {
                             break;
                         }
                     }
                     String gmail = in.next();
                     while (true) {
-                        if (containsGmail(gmail)){
+                        if (containsGmail(gmail)) {
                             System.out.print("This gmail is busy! Try again");
                             gmail = in.next();
-                        }else {
+                        } else {
                             break;
                         }
                     }
@@ -54,7 +99,7 @@ public class SocialNetwork {
                     String gender = in.next();
                     System.out.print("Type your password: ");
                     String password = in.next();
-                    users.add(new User(username,name, lastname, age, gmail, gender, password));
+                    users.add(new User(username, name, lastname, age, gmail, gender, password));
                 } else if (choose == 2) {
                     System.out.print("Please input username: ");
                     String username = in.next();
@@ -95,7 +140,7 @@ public class SocialNetwork {
                             myProfile();
                         }
                         case 2 -> {
-
+                            addPhoto();
                         }
                         case 3 -> {
                             search();
@@ -107,6 +152,25 @@ public class SocialNetwork {
         }
     }
 
+    public static void addPhoto() {
+        System.out.println("Choose image to add: ");
+        for (int i = 0; i < galery.length; i++) {
+            System.out.println((i + 1) + ".\n" + galery[i] + "\n");
+        }
+
+        int choice = in.nextInt();
+        while (choice < 1 || choice > galery.length) {
+            System.out.println("invalid input :( Try again!");
+            choice = in.nextInt();
+        }
+        in.nextLine();
+        System.out.println("Enter description");
+        String desc = in.nextLine();
+
+        Post post = new Post(galery[choice - 1], desc);
+        user.posts.add(post);
+    }
+
     public static void myProfile() {
         user.getProfile();
         System.out.print("Please select operation -->  ");
@@ -115,21 +179,21 @@ public class SocialNetwork {
         switch (choose) {
             case 1 -> {
                 System.out.println("-------------------------");
-                for(User follower: user.followers) {
+                for (User follower : user.followers) {
                     System.out.println("--> " + follower.username);
                 }
                 System.out.println("-------------------------");
             }
             case 2 -> {
                 System.out.println("-------------------------");
-                for(User following: user.followings) {
+                for (User following : user.followings) {
                     System.out.println("--> " + following.username);
                 }
                 System.out.println("-------------------------");
             }
             case 3 -> {
                 System.out.println("-------------------------");
-                for(User blocked: user.blocked) {
+                for (User blocked : user.blocked) {
                     System.out.println("--> " + blocked.username);
                 }
                 System.out.println("-------------------------");
@@ -138,11 +202,10 @@ public class SocialNetwork {
     }
 
 
-
     public static void search() {
         System.out.println("All users -->");
-        for(User temp: users) {
-            if(temp!=user) {
+        for (User temp : users) {
+            if (temp != user) {
                 System.out.println("--> " + temp.username);
             }
         }
@@ -152,20 +215,18 @@ public class SocialNetwork {
 
         if (username.equals("back")) return;
 
-        while(!containsUserName(username)
-                || username.equals(user.username))
-        {
-                System.out.print("Please try again -->  ");
-                username = in.next();
+        while (!containsUserName(username)
+                || username.equals(user.username)) {
+            System.out.print("Please try again -->  ");
+            username = in.next();
         }
         int index = findIndex(username);
-
+        User tempUser = users.get(index);
         while (true) {
-            users.get(index).getProfile();
+            tempUser.getProfile();
 
-            String follow = users.get(index).followers.contains(user) ? "Unfollow" : "Follow";
-            String block = (user.blocked.contains(users.get(index))) ? "Unblock" : "Block";
-            System.out.println(user.blocked.contains(user));
+            String follow = tempUser.followers.contains(user) ? "Unfollow" : "Follow";
+            String block = (user.blocked.contains(tempUser)) ? "Unblock" : "Block";
             System.out.printf("""
                             4: %s   \s
                             5: %s   \s
@@ -173,7 +234,7 @@ public class SocialNetwork {
                             7: Comment          \s
                             8: Back   \s
                             """,
-                    follow,block
+                    follow, block
             );
 
             System.out.print("Please select operation -->  ");
@@ -184,146 +245,83 @@ public class SocialNetwork {
             switch (choose) {
                 case 1 -> {
                     System.out.println("-------------------------");
-                    for (User followers : users.get(index).followers) {
+                    for (User followers : tempUser.followers) {
                         System.out.println("--> " + followers.username);
                     }
                     System.out.println("-------------------------");
                 }
                 case 2 -> {
                     System.out.println("-------------------------");
-                    for (User following : users.get(index).followings) {
+                    for (User following : tempUser.followings) {
                         System.out.println("--> " + following.username);
                     }
                     System.out.println("-------------------------");
                 }
                 case 3 -> {
                     System.out.println("-------------------------");
-                    for (User blocked : users.get(index).blocked) {
+                    for (User blocked : tempUser.blocked) {
                         System.out.println("--> " + blocked.username);
                     }
                     System.out.println("-------------------------");
                 }
                 case 4 -> {
-                    if(follow.equals("Follow")) {
-                        user.followings.add(users.get(index));
-                        users.get(index).followers.add(user);
-                    }else {
-                        user.followings.remove(users.get(index));
-                        users.get(index).followers.remove(user);
+                    if (follow.equals("Follow")) {
+                        user.followings.add(tempUser);
+                        tempUser.followers.add(user);
+                    } else {
+                        user.followings.remove(tempUser);
+                        tempUser.followers.remove(user);
                     }
                 }
                 case 5 -> {
 
-                    if(block.equals("Block")) {
+                    if (block.equals("Block")) {
                         if (user.containsFollowings(username)) {
-                            user.followings.remove(users.get(index));
-                            users.get(index).followers.remove(user);
+                            user.followings.remove(tempUser);
+                            tempUser.followers.remove(user);
                         }
-                        user.blocked.add(users.get(index));
-                    }else {
-                        user.blocked.remove(users.get(index));
+                        user.blocked.add(tempUser);
+                    } else {
+                        user.blocked.remove(tempUser);
                     }
                 }
                 case 6 -> {
+                    if (tempUser.posts.size() < 1) {
+                        System.out.println("No posts yet :(\n");
+                        break;
+                    }
+                    System.out.println("Choose post from profile --> ");
+                    int choice = in.nextInt();
+                    while (choice < 1 || choice > tempUser.posts.size()) {
+                        System.out.println("invalid input :( Try again!\n");
+                        choice = in.nextInt();
+                    }
+                    if(!tempUser.posts.get(choice - 1).getLikes().contains(user)) {
+                        tempUser.posts.get(choice - 1).like(user);
+                    } else {
+                        System.out.println("ups! you already liked it :/\n");
+                    }
 
                 }
                 case 7 -> {
+                    if (tempUser.posts.size() < 1) {
+                        System.out.println("No posts yet :(\n");
+                        break;
+                    }
+                    System.out.println("Choose post from profile --> ");
+                    int choice = in.nextInt();
+                    while (choice < 1 || choice > tempUser.posts.size()) {
+                        System.out.println("invalid input :( Try again!\n");
+                        choice = in.nextInt();
+                    }
+                    System.out.println("Enter comment");
+                    in.nextLine();
 
+                    tempUser.posts.get(choice - 1).addComment(user.username + ": " + in.nextLine());
                 }
             }
         }
     }
-
-
-
-
-
-
-
-//    public static void follow() {
-//        for (User temp : users) {
-//            if (temp != user
-//                    && !user.containsFollowings(temp.username)
-//                    && !user.containsBlocked(temp.username)) {
-//                System.out.println(temp.username);
-//            }
-//        }
-//
-//        System.out.println("Write one of usernames at the top: ");
-//        System.out.println("Write 'back' if you don't want to subscribe");
-//        String username = in.next();
-//
-//        if (username.equals("back")) return;
-//
-//
-//        while(!containsUserName(username)
-//                || user.containsFollowings(username)
-//                || username.equals(user.username)
-//                || user.containsBlocked(username))
-//        {
-//                System.out.print("Please try again -->  ");
-//                username = in.next();
-//        }
-//        int index = findIndex(username);
-//        user.followings.add(users.get(index));
-//        users.get(index).followers.add(user);
-//    }
-
-//    public static void unFollow() {
-//        System.out.println("Your subscribes --> ");
-//        for (int i = 0; i < user.followings.size(); i++) {
-//            System.out.println(i+1 + ": " + user.followings.get(i).username);
-//        }
-//        System.out.println("Write one of usernames at the top ");
-//        System.out.println("Write 'back' if you don't want to unsubscribe");
-//        String username = in.next();
-//        while(!user.containsFollowings(username) || username.equals(user.username)) {
-//            if (!username.equals("back")) {
-//                System.out.print("Please try again -->  ");
-//                username = in.next();
-//            }
-//            else {
-//                break;
-//            }
-//        }
-//        int index = findIndex(username);
-//        if(user.containsFollowings(username)) {
-//            user.followings.remove(users.get(index));
-//            users.get(index).followers.remove(user);
-//        }
-//    }
-//
-//    public static void block() {
-//        System.out.println("All users -->");
-//        int l = 0;
-//        for(int i = 0; i < user.followings.size(); i++) {
-//
-//        }
-//
-//        System.out.println("Write one of usernames at the top");
-//        System.out.println("Write 'back' if you don't want to unsubscribe");
-//        String username = in.next();
-//
-//        while (!containsUserName(username)
-//                || username.equals(user.username)
-//                || user.containsBlocked(username)) {
-//            if (!username.equals("back")) {
-//                System.out.print("Please try again -->  ");
-//                username = in.next();
-//            }
-//            else {
-//                break;
-//            }
-//        }
-//        int index = findIndex(username);
-//        if(containsUserName(username)) {
-//            if (user.containsFollowings(username)) {
-//                user.followings.remove(users.get(index));
-//                users.get(index).followers.remove(user);
-//            }
-//            user.blocked.add(users.get(index));
-//        }
-//    }
 
     public static int findIndex(String username) {
         int j = -1;
