@@ -31,6 +31,10 @@ public class User {
         blocked = new ArrayList<>();
     }
 
+    public boolean equals (User user) {
+        return this.username.equals(user.username);
+    }
+
     public boolean containsFollowings(String username) {
         for(User user: followings ) {
             if(user.username.equals(username)) return true;

@@ -17,6 +17,10 @@ public class Post {
         this.comments = new ArrayList<>();
     }
 
+    public boolean equals (Post post) {
+        return this.img.equals(post.img) && this.description.equals(post.description);
+    }
+
     public List<User> getLikes() {
         return likes;
     }
