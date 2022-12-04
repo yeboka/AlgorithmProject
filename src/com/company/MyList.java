@@ -25,6 +25,18 @@ public class MyList <T>{
 
         if (list.length - 1 - index >= 0) System.arraycopy(list, index + 1, list, index, list.length - 1 - index);
         size--;
+    }
+
+    public void remove (T temp) {
+        int index = -1;
+
+        for (int i = 0; i < list.length; i++) {
+            if (list[i].equals(temp)) {
+                index = i;
+                break;
+            }
+        }
+        remove(index);
 
     }
 

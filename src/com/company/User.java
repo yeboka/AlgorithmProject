@@ -9,13 +9,13 @@ public class User {
     String name;
     String lastname;
     String gmail;
-    ArrayList<User> followers;
-    ArrayList<User> followings;
-    ArrayList<User> blocked;
+    MyList<User> followers;
+    MyList<User> followings;
+    MyList<User> blocked;
     int age;
     String gender;
     String password;
-    List<Post> posts;
+    MyList<Post> posts;
 
     public User(String username, String name, String lastname, int age, String gmail, String gender, String password) {
         this.username = username;
@@ -25,10 +25,10 @@ public class User {
         this.age = age;
         this.gender = gender;
         this.password = password;
-        posts = new ArrayList<>();
-        followers = new ArrayList<>();
-        followings = new ArrayList<>();
-        blocked = new ArrayList<>();
+        posts = new MyList<>();
+        followers = new MyList<>();
+        followings = new MyList<>();
+        blocked = new MyList<>();
     }
 
     public boolean equals (User user) {
@@ -36,22 +36,22 @@ public class User {
     }
 
     public boolean containsFollowings(String username) {
-        for(User user: followings ) {
-            if(user.username.equals(username)) return true;
+        for(int i = 0; i < followings.size(); i++) {
+            if(followings.get(i).username.equals(username)) return true;
         }
         return false;
     }
 
     public boolean containsFollowers(String username) {
-        for(User user: followings ) {
-            if(user.username.equals(username)) return true;
+        for(int i = 0; i < followers.size(); i++) {
+            if(followers.get(i).username.equals(username)) return true;
         }
         return false;
     }
 
     public boolean containsBlocked(String username) {
-        for(User user: followings ) {
-            if(user.username.equals(username)) return true;
+        for(int i = 0; i < blocked.size(); i++) {
+            if(blocked.get(i).username.equals(username)) return true;
         }
         return false;
     }
@@ -64,9 +64,8 @@ public class User {
         );
 
         if (posts.size() == 0) System.out.println("There are no publications yet");
-        for (Post post :
-                posts) {
-            System.out.println(post.toString());
+        for (int i = 0; i < posts.size(); i++) {
+            System.out.println(posts.get(i).toString());
         }
 
         System.out.println(

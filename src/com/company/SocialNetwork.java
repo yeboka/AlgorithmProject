@@ -48,13 +48,13 @@ public class SocialNetwork {
                     "    '-------'"
     };
 
-    static ArrayList<User> users;
+    static MyList<User> users;
     static Scanner in = new Scanner(System.in);
     static User user;
     static boolean isLogged;
 
     public static void main(String[] args) {
-        users = new ArrayList<>();
+        users = new MyList<>();
         int index;
         users.add(new User("syr", "syrkhan", "madiyev", 18, "cheese@gmail.com", "male", "1"));
         users.add(new User("edu", "eduard", "nurlanov", 18, "male", "edu@gmail.com", "1"));
@@ -179,22 +179,22 @@ public class SocialNetwork {
         switch (choose) {
             case 1 -> {
                 System.out.println("-------------------------");
-                for (User follower : user.followers) {
-                    System.out.println("--> " + follower.username);
+                for (int i = 0; i < user.followers.size(); i++) {
+                    System.out.println("--> " + user.followers.get(i).username);
                 }
                 System.out.println("-------------------------");
             }
             case 2 -> {
                 System.out.println("-------------------------");
-                for (User following : user.followings) {
-                    System.out.println("--> " + following.username);
+                for (int i = 0; i < user.followings.size(); i++) {
+                    System.out.println("--> " + user.followings.get(i).username);
                 }
                 System.out.println("-------------------------");
             }
             case 3 -> {
                 System.out.println("-------------------------");
-                for (User blocked : user.blocked) {
-                    System.out.println("--> " + blocked.username);
+                for (int i = 0; i < user.blocked.size(); i++) {
+                    System.out.println("--> " + user.blocked.get(i).username);
                 }
                 System.out.println("-------------------------");
             }
@@ -204,9 +204,9 @@ public class SocialNetwork {
 
     public static void search() {
         System.out.println("All users -->");
-        for (User temp : users) {
-            if (temp != user) {
-                System.out.println("--> " + temp.username);
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i) != user) {
+                System.out.println("--> " + users.get(i).username);
             }
         }
         System.out.println("Write one of usernames at the top ");
@@ -245,22 +245,22 @@ public class SocialNetwork {
             switch (choose) {
                 case 1 -> {
                     System.out.println("-------------------------");
-                    for (User followers : tempUser.followers) {
-                        System.out.println("--> " + followers.username);
+                    for (int i = 0; i < tempUser.followers.size(); i++) {
+                        System.out.println("--> " + tempUser.followers.get(i).username);
                     }
                     System.out.println("-------------------------");
                 }
                 case 2 -> {
                     System.out.println("-------------------------");
-                    for (User following : tempUser.followings) {
-                        System.out.println("--> " + following.username);
+                    for (int i = 0; i < tempUser.followings.size(); i++) {
+                        System.out.println("--> " + tempUser.followings.get(i).username);
                     }
                     System.out.println("-------------------------");
                 }
                 case 3 -> {
                     System.out.println("-------------------------");
-                    for (User blocked : tempUser.blocked) {
-                        System.out.println("--> " + blocked.username);
+                    for (int i = 0; i < tempUser.blocked.size(); i++) {
+                        System.out.println("--> " + tempUser.blocked.get(i).username);
                     }
                     System.out.println("-------------------------");
                 }
@@ -335,15 +335,15 @@ public class SocialNetwork {
     }
 
     public static boolean containsUserName(String username) {
-        for (User user : users) {
-            if (user.username.equals(username)) return true;
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).username.equals(username)) return true;
         }
         return false;
     }
 
     public static boolean containsGmail(String gmail) {
-        for (User user : users) {
-            if (user.gmail.equals(gmail)) return true;
+        for (int i = 0; i < users.size(); i++) {
+            if (users.get(i).gmail.equals(gmail)) return true;
         }
         return false;
     }
