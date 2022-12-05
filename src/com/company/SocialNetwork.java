@@ -38,9 +38,9 @@ public class SocialNetwork {
                     " \\        /\n" +
                     "  `._,._,'",
             "      )  (\n" +
-                    "     (   ) )\n" +
-                    "      ) ( (\n" +
-                    "    _______)_\n" +
+                    "     (   ) )    \n" +
+                    "      ) ( (     \n" +
+                    "    _______)_   \n" +
                     " .-'---------|  \n" +
                     "( C|/\\/\\/\\/\\/|\n" +
                     " '-./\\/\\/\\/\\/|\n" +
@@ -298,6 +298,7 @@ public class SocialNetwork {
                     }
                     if(!tempUser.posts.get(choice - 1).getLikes().contains(user)) {
                         tempUser.posts.get(choice - 1).like(user);
+                        Post.sort(tempUser.posts.getList(), 0, tempUser.posts.size() - 1);
                     } else {
                         System.out.println("ups! you already liked it :/\n");
                     }

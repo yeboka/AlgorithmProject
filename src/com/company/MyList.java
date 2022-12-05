@@ -20,6 +20,10 @@ public class MyList <T>{
         }
     }
 
+    public T[] getList() {
+        return list;
+    }
+
     public void remove (int index) {
         if (index < 0 || index >= list.length) return;
 
