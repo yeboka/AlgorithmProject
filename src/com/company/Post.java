@@ -5,13 +5,14 @@ public class Post {
     private String description;
     private MyList<User> likes;
     private MyList<String> comments;
+    private String author;
 
-
-    public Post (String img, String description){
+    public Post (String img, String description, String author){
         this.img = img;
         this.description = description;
         this.likes = new MyList<>();
         this.comments = new MyList<>();
+        this.author = author;
     }
 
     public Post (String img, String description, int numOfLikes){
@@ -24,6 +25,8 @@ public class Post {
         this.comments = new MyList<>();
     }
 
+
+
     public boolean equals (Post post) {
         return this.img.equals(post.img) && this.description.equals(post.description);
     }
@@ -31,6 +34,8 @@ public class Post {
     public MyList<User> getLikes() {
         return likes;
     }
+
+    public String getAuthor () { return author; }
 
     public void addComment(String comment) {
         comments.add(comment);

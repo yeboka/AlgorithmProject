@@ -48,13 +48,15 @@ public class SocialNetwork {
                     "    '-------'"
     };
 
-    static MyList<User> users;
     static Scanner in = new Scanner(System.in);
+    static MyList<User> users;
+    static MyList<Post> allPosts;
     static User user;
     static boolean isLogged;
 
     public static void main(String[] args) {
         users = new MyList<>();
+        allPosts = new MyList<>();
         int index;
         users.add(new User("syr", "syrkhan", "madiyev", 18, "cheese@gmail.com", "male", "1"));
         users.add(new User("edu", "eduard", "nurlanov", 18, "male", "edu@gmail.com", "1"));
@@ -125,12 +127,13 @@ public class SocialNetwork {
                             -------------------------
                             1: Show my profile   \s
                             2: Add photo    \s
-                            3: Search user  \s
-                            4: logout           \s
+                            3: Get K posts with a maximum number of likes\s
+                            4: Search user  \s
+                            5: logout           \s
                             -------------------------""");
                     System.out.print("Please select 1, 2, 3, 4 : ");
                     int input = in.nextInt();
-                    if (input == 4) {
+                    if (input == 5) {
                         user = null;
                         isLogged = false;
                         break;
@@ -143,6 +146,9 @@ public class SocialNetwork {
                             addPhoto();
                         }
                         case 3 -> {
+                            getKPosts();
+                        }
+                        case 4 -> {
                             search();
                         }
 
@@ -167,8 +173,29 @@ public class SocialNetwork {
         System.out.println("Enter description");
         String desc = in.nextLine();
 
-        Post post = new Post(galery[choice - 1], desc);
+        Post post = new Post(galery[choice - 1], desc, user.username);
         user.posts.add(post);
+        allPosts.add(post);
+    }
+
+    public static void getKPosts () {
+        System.out.println("\nEnter number of posts -->");
+        int k = in.nextInt();
+        while (k < 1 || k > allPosts.size()) {
+            System.out.println("invalid input :( Try again!");
+            k = in.nextInt();
+        }
+        MaxHeap maxHeap = new MaxHeap((int)Math.log(k) + 1);
+
+        for (int i = 0; i < k; i++) {
+            maxHeap.add(allPosts.get(i));
+        }
+
+        for (int i = 0; i < k; i++) {
+            Post post = maxHeap.poll();
+            System.out.println((i + 1) + ". " + post.getAuthor() + "\n" +
+                    post);
+        }
     }
 
     public static void myProfile() {
