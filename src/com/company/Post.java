@@ -14,6 +14,16 @@ public class Post {
         this.comments = new MyList<>();
     }
 
+    public Post (String img, String description, int numOfLikes){
+        this.img = img;
+        this.description = description;
+        this.likes = new MyList<>();
+        for (int i = 0; i < numOfLikes; i++) {
+            likes.add(new User("xx", "yerbo", "mukan", 18, "@@", "male", "0"));
+        }
+        this.comments = new MyList<>();
+    }
+
     public boolean equals (Post post) {
         return this.img.equals(post.img) && this.description.equals(post.description);
     }
@@ -28,6 +38,10 @@ public class Post {
 
     public void like(User user) {
         likes.add(user);
+    }
+
+    public int getNumOfLikes() {
+        return likes.size();
     }
 
     @Override
