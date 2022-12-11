@@ -187,7 +187,7 @@ public class SocialNetwork {
         }
         MaxHeap maxHeap = new MaxHeap((int)Math.log(k) + 1);
 
-        for (int i = 0; i < k; i++) {
+        for (int i = 0; i < allPosts.size(); i++) {
             maxHeap.add(allPosts.get(i));
         }
 
