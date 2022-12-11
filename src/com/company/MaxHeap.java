@@ -42,7 +42,6 @@ public class MaxHeap {
         int i = 1;
         while (i * 2 + 1 < size) {
             int j;
-
             if (heap[2 * i].getNumOfLikes() >= heap[2 * i + 1].getNumOfLikes())
                 j = 2 * i;
             else
@@ -55,8 +54,6 @@ public class MaxHeap {
                 i = j;
             } else
                 break;
-
-
         }
 
         return res;

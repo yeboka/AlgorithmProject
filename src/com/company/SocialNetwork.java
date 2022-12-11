@@ -66,7 +66,7 @@ public class SocialNetwork {
 
         while (true) {
             if (!isLogged) {
-                System.out.println("|||||||||||||||||||||||||||||||||||||||||||||||||||||");
+                System.out.println("||||||||||||||||||||||||||||||||||||||||||||||||||");
                 System.out.println("1. Registration");
                 System.out.println("2. Log in");
                 System.out.println("3. Stop");
@@ -82,10 +82,11 @@ public class SocialNetwork {
                             break;
                         }
                     }
+                    System.out.print("Type your gmail: ");
                     String gmail = in.next();
                     while (true) {
-                        if (containsGmail(gmail)) {
-                            System.out.print("This gmail is busy! Try again");
+                        if (containsGmail(gmail) || !gmail.contains("@")) {
+                            System.out.print("This gmail is busy or wrong! Try again");
                             gmail = in.next();
                         } else {
                             break;
@@ -129,11 +130,13 @@ public class SocialNetwork {
                             2: Add photo    \s
                             3: Get K posts with a maximum number of likes\s
                             4: Search user  \s
-                            5: logout           \s
+                            5: Max common subscribers
+                            6: logout           \s
                             -------------------------""");
                     System.out.print("Please select 1, 2, 3, 4 : ");
+
                     int input = in.nextInt();
-                    if (input == 5) {
+                    if (input == 6) {
                         user = null;
                         isLogged = false;
                         break;
@@ -151,7 +154,9 @@ public class SocialNetwork {
                         case 4 -> {
                             search();
                         }
-
+                        case 5 -> {
+                            maxCommonSubscribers();
+                        }
                     }
                 }
             }
@@ -178,14 +183,14 @@ public class SocialNetwork {
         allPosts.add(post);
     }
 
-    public static void getKPosts () {
+    public static void getKPosts() {
         System.out.println("\nEnter number of posts -->");
         int k = in.nextInt();
         while (k < 1 || k > allPosts.size()) {
             System.out.println("invalid input :( Try again!");
             k = in.nextInt();
         }
-        MaxHeap maxHeap = new MaxHeap((int)Math.log(k) + 1);
+        MaxHeap maxHeap = new MaxHeap((int) Math.log(k) + 1);
 
         for (int i = 0; i < allPosts.size(); i++) {
             maxHeap.add(allPosts.get(i));
@@ -195,6 +200,27 @@ public class SocialNetwork {
             Post post = maxHeap.poll();
             System.out.println((i + 1) + ". " + post.getAuthor() + "\n" +
                     post);
+        }
+    }
+
+    public static void maxCommonSubscribers() {
+        MyList<User> maxUser = new MyList<>();
+        int max = 0;
+        for (int i = 0; i < user.followers.size(); i++) {
+            int counter = 0;
+            for (int j = 0; j < user.followers.size(); j++) {
+                if (user.followers.get(i).followers.contains(user.followers.get(j)))
+                    counter++;
+            }
+            if (counter > 0 && max == counter) {
+                maxUser.add(user);
+            } else if (max < counter) {
+                maxUser = new MyList<>();
+                maxUser.add(user.followers.get(i));
+            }
+        }
+        for (int i = 0; i < maxUser.size(); i++) {
+            System.out.println("--> " + maxUser.get(i).username);
         }
     }
 
@@ -301,7 +327,6 @@ public class SocialNetwork {
                     }
                 }
                 case 5 -> {
-
                     if (block.equals("Block")) {
                         if (user.containsFollowings(username)) {
                             user.followings.remove(tempUser);
@@ -323,7 +348,7 @@ public class SocialNetwork {
                         System.out.println("invalid input :( Try again!\n");
                         choice = in.nextInt();
                     }
-                    if(!tempUser.posts.get(choice - 1).getLikes().contains(user)) {
+                    if (!tempUser.posts.get(choice - 1).getLikes().contains(user)) {
                         tempUser.posts.get(choice - 1).like(user);
                         Post.sort(tempUser.posts.getList(), 0, tempUser.posts.size() - 1);
                     } else {
