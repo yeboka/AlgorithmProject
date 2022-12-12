@@ -20,7 +20,6 @@ public class MaxHeap {
 
         int i = size;
         while (i > 0) {
-//            System.out.println(heap[i].toString());
             if (i / 2 > 0 && heap[i].getNumOfLikes() > heap[i / 2].getNumOfLikes()) {
                 Post temp = heap[i];
                 heap[i] = heap[i / 2];

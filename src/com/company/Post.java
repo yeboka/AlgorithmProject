@@ -25,12 +25,6 @@ public class Post {
         this.comments = new MyList<>();
     }
 
-
-
-    public boolean equals (Post post) {
-        return this.img.equals(post.img) && this.description.equals(post.description);
-    }
-
     public MyList<User> getLikes() {
         return likes;
     }
@@ -66,7 +60,6 @@ public class Post {
     public static void sort (Object[] posts, int low, int high) {
 
         if (low < high) {
-
             // pi is partitioning iSndex, arr[p]
             // is now at right place
             int pi = partition(posts, low, high);
