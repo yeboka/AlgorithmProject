@@ -212,11 +212,13 @@ public class SocialNetwork {
                 if (user.followers.get(i).followers.contains(user.followers.get(j)))
                     counter++;
             }
-            if (counter > 0 && max == counter) {
+            if ( max == counter && counter > 0) {
                 maxUser.add(user);
-            } else if (max < counter) {
+            } else if (max < counter ) {
+                max = counter;
                 maxUser = new MyList<>();
                 maxUser.add(user.followers.get(i));
+
             }
         }
         for (int i = 0; i < maxUser.size(); i++) {
@@ -275,105 +277,107 @@ public class SocialNetwork {
         }
         int index = findIndex(username);
         User tempUser = users.get(index);
-        while (true) {
-            tempUser.getProfile();
+        if(!tempUser.blocked.contains(user)) {
+            while (true) {
+                tempUser.getProfile();
 
-            String follow = tempUser.followers.contains(user) ? "Unfollow" : "Follow";
-            String block = (user.blocked.contains(tempUser)) ? "Unblock" : "Block";
-            System.out.printf("""
-                            4: %s   \s
-                            5: %s   \s
-                            6: Like \s
-                            7: Comment          \s
-                            8: Back   \s
-                            """,
-                    follow, block
-            );
+                String follow = tempUser.followers.contains(user) ? "Unfollow" : "Follow";
+                String block = (user.blocked.contains(tempUser)) ? "Unblock" : "Block";
+                System.out.printf("""
+                                4: %s   \s
+                                5: %s   \s
+                                6: Like \s
+                                7: Comment          \s
+                                8: Back   \s
+                                """,
+                        follow, block
+                );
 
-            System.out.print("Please select operation -->  ");
-            int choose = in.nextInt();
+                System.out.print("Please select operation -->  ");
+                int choose = in.nextInt();
 
-            if (choose == 8) return;
+                if (choose == 8) return;
 
-            switch (choose) {
-                case 1 -> {
-                    System.out.println("-------------------------");
-                    for (int i = 0; i < tempUser.followers.size(); i++) {
-                        System.out.println("--> " + tempUser.followers.get(i).username);
+                switch (choose) {
+                    case 1 -> {
+                        System.out.println("-------------------------");
+                        for (int i = 0; i < tempUser.followers.size(); i++) {
+                            System.out.println("--> " + tempUser.followers.get(i).username);
+                        }
+                        System.out.println("-------------------------");
                     }
-                    System.out.println("-------------------------");
-                }
-                case 2 -> {
-                    System.out.println("-------------------------");
-                    for (int i = 0; i < tempUser.followings.size(); i++) {
-                        System.out.println("--> " + tempUser.followings.get(i).username);
+                    case 2 -> {
+                        System.out.println("-------------------------");
+                        for (int i = 0; i < tempUser.followings.size(); i++) {
+                            System.out.println("--> " + tempUser.followings.get(i).username);
+                        }
+                        System.out.println("-------------------------");
                     }
-                    System.out.println("-------------------------");
-                }
-                case 3 -> {
-                    System.out.println("-------------------------");
-                    for (int i = 0; i < tempUser.blocked.size(); i++) {
-                        System.out.println("--> " + tempUser.blocked.get(i).username);
+                    case 3 -> {
+                        System.out.println("-------------------------");
+                        for (int i = 0; i < tempUser.blocked.size(); i++) {
+                            System.out.println("--> " + tempUser.blocked.get(i).username);
+                        }
+                        System.out.println("-------------------------");
                     }
-                    System.out.println("-------------------------");
-                }
-                case 4 -> {
-                    if (follow.equals("Follow")) {
-                        user.followings.add(tempUser);
-                        tempUser.followers.add(user);
-                    } else {
-                        user.followings.remove(tempUser);
-                        tempUser.followers.remove(user);
-                    }
-                }
-                case 5 -> {
-                    if (block.equals("Block")) {
-                        if (user.containsFollowings(username)) {
+                    case 4 -> {
+                        if (follow.equals("Follow")) {
+                            user.followings.add(tempUser);
+                            tempUser.followers.add(user);
+                        } else {
                             user.followings.remove(tempUser);
                             tempUser.followers.remove(user);
                         }
-                        user.blocked.add(tempUser);
-                    } else {
-                        user.blocked.remove(tempUser);
                     }
-                }
-                case 6 -> {
-                    if (tempUser.posts.size() < 1) {
-                        System.out.println("No posts yet :(\n");
-                        break;
+                    case 5 -> {
+                        if (block.equals("Block")) {
+                            if (user.containsFollowings(username)) {
+                                user.followings.remove(tempUser);
+                                tempUser.followers.remove(user);
+                            }
+                            user.blocked.add(tempUser);
+                        } else {
+                            user.blocked.remove(tempUser);
+                        }
                     }
-                    System.out.println("Choose post from profile --> ");
-                    int choice = in.nextInt();
-                    while (choice < 1 || choice > tempUser.posts.size()) {
-                        System.out.println("invalid input :( Try again!\n");
-                        choice = in.nextInt();
-                    }
-                    if (!tempUser.posts.get(choice - 1).getLikes().contains(user)) {
-                        tempUser.posts.get(choice - 1).like(user);
-                        Post.sort(tempUser.posts.getList(), 0, tempUser.posts.size() - 1);
-                    } else {
-                        System.out.println("ups! you already liked it :/\n");
-                    }
+                    case 6 -> {
+                        if (tempUser.posts.size() < 1) {
+                            System.out.println("No posts yet :(\n");
+                            break;
+                        }
+                        System.out.println("Choose post from profile --> ");
+                        int choice = in.nextInt();
+                        while (choice < 1 || choice > tempUser.posts.size()) {     //input validation
+                            System.out.println("invalid input :( Try again!\n");
+                            choice = in.nextInt();
+                        }
+                        if (!tempUser.posts.get(choice - 1).getLikes().contains(user)) {
+                            tempUser.posts.get(choice - 1).like(user);               // liking
+                            Post.sort(tempUser.posts.getList(), 0, tempUser.posts.size() - 1);
+                        } else {
+                            System.out.println("ups! you already liked it :/\n");
+                        }
 
-                }
-                case 7 -> {
-                    if (tempUser.posts.size() < 1) {
-                        System.out.println("No posts yet :(\n");
-                        break;
                     }
-                    System.out.println("Choose post from profile --> ");
-                    int choice = in.nextInt();
-                    while (choice < 1 || choice > tempUser.posts.size()) {
-                        System.out.println("invalid input :( Try again!\n");
-                        choice = in.nextInt();
-                    }
-                    System.out.println("Enter comment");
-                    in.nextLine();
+                    case 7 -> {
+                        if (tempUser.posts.size() < 1) {
+                            System.out.println("No posts yet :(\n");
+                            break;
+                        }
+                        System.out.println("Choose post from profile --> ");
+                        int choice = in.nextInt();
+                        while (choice < 1 || choice > tempUser.posts.size()) {      //input validation
+                            System.out.println("invalid input :( Try again!\n");
+                            choice = in.nextInt();
+                        }
+                        System.out.println("Enter comment");
+                        in.nextLine();
 
-                    tempUser.posts.get(choice - 1).addComment(user.username + ": " + in.nextLine());
+                        tempUser.posts.get(choice - 1).addComment(user.username + ": " + in.nextLine());  // adding comment
+                    }
                 }
             }
-        }
+        }else System.out.println("Ups:(");
     }
 
     public static int findIndex(String username) {

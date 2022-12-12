@@ -67,7 +67,7 @@ public class Post {
 
         if (low < high) {
 
-            // pi is partitioning index, arr[p]
+            // pi is partitioning iSndex, arr[p]
             // is now at right place
             int pi = partition(posts, low, high);
 
