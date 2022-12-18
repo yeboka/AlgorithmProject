@@ -49,20 +49,20 @@ public class SocialNetwork {
     };
 
     static Scanner in = new Scanner(System.in);
-    static MyList<User> users;
+    static MyMap<String, User> users;
     static MyList<Post> allPosts;
     static User user;
     static boolean isLogged;
 
     public static void main(String[] args) {
-        users = new MyList<>();
+        users = new MyMap<>();
         allPosts = new MyList<>();
         int index;
-        users.add(new User("syr", "syrkhan", "madiyev", 18, "cheese@gmail.com", "male", "1"));
-        users.add(new User("edu", "eduard", "nurlanov", 18, "male", "edu@gmail.com", "1"));
-        users.add(new User("yerka", "yerkanat", "sultanov", 18, "yerka@gmail.com", "male", "1"));
-        users.add(new User("qazaqtynqarabalasy", "yerbolat", "mukhan", 18, "yerbo@gmail.com", "male", "1"));
-        users.add(new User("mukhanov", "zhanbolat", "mukhan", 18, "zhanbo@gmail.com", "male", "1"));
+        users.put("syr", new User("syr", "syrkhan", "madiyev", 18, "cheese@gmail.com", "male", "1"));
+        users.put("edu", new User("edu", "eduard", "nurlanov", 18, "male", "edu@gmail.com", "1"));
+        users.put("yerka", new User("yerka", "yerkanat", "sultanov", 18, "yerka@gmail.com", "male", "1"));
+        users.put("qazaqtynqarabalasy", new User("qazaqtynqarabalasy", "yerbolat", "mukhan", 18, "yerbo@gmail.com", "male", "1"));
+        users.put("mukhanov", new User("mukhanov", "zhanbolat", "mukhan", 18, "zhanbo@gmail.com", "male", "1"));
 
         while (true) {
             if (!isLogged) {
@@ -75,7 +75,7 @@ public class SocialNetwork {
                     System.out.print("Type your username: ");
                     String username = in.next();
                     while (true) {
-                        if (containsUserName(username)) {
+                        if (users.containsKey(username)) {
                             System.out.print("This username is busy! Try again");
                             username = in.next();
                         } else {
@@ -86,7 +86,7 @@ public class SocialNetwork {
                     String gmail = in.next();
                     while (true) {
                         if (containsGmail(gmail) || !gmail.contains("@")) {
-                            System.out.print("This gmail is busy or wrong! Try again");
+                            System.out.print("This gmail is busy or wrong! Try again: ");
                             gmail = in.next();
                         } else {
                             break;
@@ -102,18 +102,18 @@ public class SocialNetwork {
                     String gender = in.next();
                     System.out.print("Type your password: ");
                     String password = in.next();
-                    users.add(new User(username, name, lastname, age, gmail, gender, password));
+                    users.put( username ,new User(username, name, lastname, age, gmail, gender, password));
                 } else if (choose == 2) {
                     System.out.print("Please input username: ");
                     String username = in.next();
-                    index = findIndex(username);
-                    if (index == -1) {
+//                    index = findIndex(username);
+                    if (!users.containsKey(username)) {
                         System.out.println("The user is not found");
                     } else {
                         System.out.print("Please input password: ");
                         String password = in.next();
-                        if (users.get(index).password.equals(password)) {
-                            user = users.get(index);
+                        if (users.get(username).password.equals(password)) {
+                            user = users.get(username);
                             isLogged = true;
                         } else {
                             System.out.println("Password is not correct! Try again");
@@ -259,9 +259,10 @@ public class SocialNetwork {
 
     public static void search() {
         System.out.println("All users -->");
+        MyList<String> temp = users.keySet();
         for (int i = 0; i < users.size(); i++) {
-            if (users.get(i) != user) {
-                System.out.println("--> " + users.get(i).username);
+            if (users.get(temp.get(i)) != user) {
+                System.out.println("--> " + users.get(temp.get(i)).username);
             }
         }
         System.out.println("Write one of usernames at the top ");
@@ -270,13 +271,12 @@ public class SocialNetwork {
 
         if (username.equals("back")) return;
 
-        while (!containsUserName(username)
+        while (!users.containsKey(username)
                 || username.equals(user.username)) {
             System.out.print("Please try again -->  ");
             username = in.next();
         }
-        int index = findIndex(username);
-        User tempUser = users.get(index);
+        User tempUser = users.get(username);
         if(!tempUser.blocked.contains(user)) {
             while (true) {
                 tempUser.getProfile();
@@ -380,27 +380,28 @@ public class SocialNetwork {
         }else System.out.println("Ups:(");
     }
 
-    public static int findIndex(String username) {
-        int j = -1;
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).username.equals(username)) {
-                j = i;
-                break;
-            }
-        }
-        return j;
-    }
-
-    public static boolean containsUserName(String username) {
-        for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).username.equals(username)) return true;
-        }
-        return false;
-    }
-
+//    public static int findIndex(String username) {
+//        int j = -1;
+//        for (int i = 0; i < users.size(); i++) {
+//            if (users.get(i).username.equals(username)) {
+//                j = i;
+//                break;
+//            }
+//        }
+//        return j;
+//    }
+//
+//    public static boolean containsUserName(String username) {
+//        for (int i = 0; i < users.size(); i++) {
+//            if (users.get(i).username.equals(username)) return true;
+//        }
+//        return false;
+//    }
+//
     public static boolean containsGmail(String gmail) {
+        MyList<String> keys = users.keySet();
         for (int i = 0; i < users.size(); i++) {
-            if (users.get(i).gmail.equals(gmail)) return true;
+            if (users.get(keys.get(i)).gmail.equals(gmail)) return true;
         }
         return false;
     }

@@ -7,6 +7,7 @@ public class MyMap<K, V> {
 
     private ListNode<K, V>[] list;
     private final int LENGTH = 100;
+    private int size;
 
     class ListNode<K, V> {
         private K key;
@@ -32,7 +33,8 @@ public class MyMap<K, V> {
     }
 
     MyMap () {
-        list = new ListNode[100];
+        this.size = 0;
+        this.list = new ListNode[100];
     }
 
     public void put(K key, V val) {
@@ -52,6 +54,7 @@ public class MyMap<K, V> {
 
             head.next = new ListNode<>(key, val);
         }
+        size++;
     }
 
     public V get(K key) {
@@ -78,11 +81,13 @@ public class MyMap<K, V> {
             ListNode<K, V> head = list[hash];
             if (head != null && head.next == null) {
                 list[hash] = null;
+                size--;
                 return;
             }
             while (head != null && head.next != null) {
                 if (head.next.key.equals(key)) {
                     head.next = head.next.next;
+                    size--;
                     return;
                 }
                 head = head.next;
@@ -118,5 +123,9 @@ public class MyMap<K, V> {
             }
         }
         return keys;
+    }
+
+    public int size () {
+        return size;
     }
 }
