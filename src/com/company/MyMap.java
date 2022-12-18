@@ -79,6 +79,8 @@ public class MyMap<K, V> {
 
         if (list[hash] != null) {
             ListNode<K, V> head = list[hash];
+            if (list[hash].key.equals(key)) list[hash] = list[hash].next;
+
             if (head != null && head.next == null) {
                 list[hash] = null;
                 size--;

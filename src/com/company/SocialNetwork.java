@@ -228,6 +228,7 @@ public class SocialNetwork {
 
     public static void myProfile() {
         user.getProfile();
+        System.out.println("4: Back");
         System.out.print("Please select operation -->  ");
         int choose = in.nextInt();
 

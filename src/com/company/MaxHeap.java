@@ -57,10 +57,4 @@ public class MaxHeap {
 
         return res;
     }
-
-    public void print () {
-        for (Post post : heap) {
-            if (post != null) System.out.println(post.toString());
-        }
-    }
 }
